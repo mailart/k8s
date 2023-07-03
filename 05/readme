@@ -1,0 +1,25 @@
+kubectl get all
+
+#creaet or edit pod
+kubectl apply -f podfile.yml
+
+#port forward
+kubectl port-forward podname hostport:podport
+
+#del pod
+kubectl delete pot podname
+
+#appliy service
+kubectl apply -f podfile.yml
+
+#detils of svc
+kubectl describe svc petclinic
+
+#detils of po
+kubectl describe po petclinic
+
+#get pods 
+kubectl get pods
+
+#get all
+kubectl get all
