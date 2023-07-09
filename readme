@@ -1,1 +1,41 @@
+k8s本質
+
+基礎組成
+	pod，deploy, repca 都是img相關，用於描述那個img被load，定義別名(和service關聯)，定義屬性和configmap, sercertmap 關聯
+
+service
+	定義pod之間的訪問方式，根據名稱filter定位流量到指定continer(pod, deploy, repec創建)的端口，工作在四層，也可以暴露部分端口對外部
+	常見類型
+		ClusterIP：这是默认的Service类型。ClusterIP类型的Service为Pods提供了内部集群中的稳定连接。它使用 Kubernetes内部DNS解析来负载均衡服务后端的Pods，通过内部Cluster IP提供唯一固定的虚拟IP地址，从而在集群内提供了稳定、可靠的服务发现和负载均衡。
+
+		NodePort：此类型的Service会将外部流量转发到ClusterIP上，通常使用NodePort类型的Service来暴露外部服务。NodePort将Pod暴露在每个节点的IP地址和一个使用静态端口的外部IP地址上，创建NodePort Service后，Kubernetes会为 Service分配一个端口，通过访问指定的hostIP和NodePort可以直接访问服务。
+
+		LoadBalancer：这种类型的Service适用于云平台中将某个服务暴露出来，由云服务商根据配置自动创建并配置负载均衡器。通过此方式，外部流量可以被平衡到集群内的各个节点(Workers)中，Kubernetes会调用云平台的负载均衡器API，并在云端创建负载均衡器，这些负载均衡器会自动路由到集群中的服务。
+
+		ExternalName：此类型的Service节点会将所有流量直接转发到某个预定义的外部服务。通常情况下，在集群内使用ExternalName Service类型，将某个外部服务作为集群内部服务的别名来使用，使得内部服务使用起来更加方便和简单。
+
+configmap, secertmap
+	額外的屬性描述文件，用於INJECT環境變量，磁盤，密鑰到continer(pod, deploy, repec創建)
+
+ingress
+	相當於7曾防火墻，可以解析協議内部内容，分配到不同的continer(pod, deploy, repec創建)
+
+
 https://github.com/spring2go/k8s-msa-in-action-ppt/blob/master/ch05/ch05_05.pdf
+
+查看所有節點
+kubectl get all
+
+查看namespace
+kubectl get ns
+
+查看特定namespace中的東西，如master組件主要在ns  kube-system
+kubectl get all -n kube-system
+
+登錄特定container并且執行cmd,下面登錄continaer執行shell
+kubectl exec -it petclinic-5895878465-bbggf sh
+
+刪除deployment, svc, pod,必須按次序
+kubectl delete deploy --all
+kubectl delete svc --all
+kubectl delete pod --all
